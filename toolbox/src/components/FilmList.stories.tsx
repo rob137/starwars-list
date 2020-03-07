@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { createClient, Provider, useQuery } from 'urql';
 
+type Sorter = 'title' | 'releaseDate' | '';
+
+interface Film {
+  title: string;
+  releaseDate: string;
+}
+
 const client = createClient({
   url: 'https://cors-anywhere.herokuapp.com/swapi.graph.cool',
 });
