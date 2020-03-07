@@ -46,16 +46,16 @@ const FilmListComponent = () => {
 
   if (result.fetching)
     return (
-      <div>
-        <img src={loadingGif} />
-        'loading..'
+      <div className="p-6 text-gray-700 flex items-center flex-col ">
+        <img src={loadingGif} alt="loading" />
+        Loading...
       </div>
     );
   if (result.error)
     return (
-      <div>
-        <img src={errorGif} />
-        'Encountered an error loading the films! Please try again later.'
+      <div className="p-6 text-gray-700 flex items-center text-center flex-col">
+        <img src={errorGif} alt="error" />
+        Encountered an error loading the films! Please try again later.
       </div>
     );
 
@@ -77,26 +77,36 @@ const FilmListComponent = () => {
   }
 
   return (
-    <div>
+    <div className="p-6 text-gray-700">
       <input
         type="text"
+        className="mr-2 bg-gray-200 rounded-sm p-1 w-2/5"
         placeholder="Filter by film name"
         onChange={(e) => setEpisode(e.target.value)}
       />
-      <select onChange={(e) => setSorter(e.target.value as Sorter)}>
+      <select
+        className="mr-2 p-1 bg-gray-100 cursor-pointer"
+        onChange={(e) => setSorter(e.target.value as Sorter)}
+      >
         <option value="">--Sort films by--</option>
         <option value="title">Title</option>
         <option value="releaseDate">Release date</option>
       </select>
-      <select onChange={(e) => setOrder(e.target.value)}>
+      <select
+        className="mr-2 p-1 bg-gray-100 cursor-pointer"
+        onChange={(e) => setOrder(e.target.value)}
+      >
         <option value="">--Order by--</option>
         <option value="ascending">Ascending</option>
         <option value="descending">Descending</option>
       </select>
-      <ul>
+      <ul className="mt-4">
         {filteredFilms.map((film: Film, key: number) => (
           <li key={key}>
-            {film.title} - {new Date(film.releaseDate).getUTCFullYear()}
+            {film.title} -{' '}
+            <span className="italic">
+              {new Date(film.releaseDate).getUTCFullYear()}
+            </span>
           </li>
         ))}
       </ul>
