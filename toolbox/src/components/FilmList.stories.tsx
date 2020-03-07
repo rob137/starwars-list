@@ -36,18 +36,28 @@ export const Default = () => {
 
 const FilmListComponent = () => {
   const [episode, setEpisode] = useState('');
+  const [sorter, setSorter] = useState<Sorter>('');
+  const [order, setOrder] = useState('ascending');
   const [result] = useQuery({
     query: getAllFilms,
   });
 
-  if (result.fetching) return <div>'Loading...'</div>;
+  if (result.fetching) return <div>'loading...'</div>;
   if (result.error) return <div>'Oh no!'</div>;
+
   const { allFilms } = result.data;
-  let filteredFilms = allFilms;
-  if (episode) {
-    filteredFilms = allFilms.filter((film: any) =>
-      film.title.includes(episode),
-    );
+  const filteredFilms = episode
+    ? allFilms.filter((film: any) => film.title.includes(episode))
+    : allFilms;
+
+  if (sorter && order) {
+    filteredFilms.sort((a: Film, b: Film) => {
+      if (order === 'ascending') {
+        return a[sorter] < b[sorter] ? -1 : 1;
+      } else {
+        return a[sorter] > b[sorter] ? -1 : 1;
+      }
+    });
   }
 
   return (
@@ -57,6 +67,16 @@ const FilmListComponent = () => {
         placeholder="Filter by film name"
         onChange={(e) => setEpisode(e.target.value)}
       />
+      <select onChange={(e) => setSorter(e.target.value as Sorter)}>
+        <option value="">--Sort films by--</option>
+        <option value="title">Title</option>
+        <option value="releaseDate">Release date</option>
+      </select>
+      <select onChange={(e) => setOrder(e.target.value)}>
+        <option value="">--Order by--</option>
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+      </select>
       <ul>
         {filteredFilms.map((film: any, key: number) => (
           <li key={key}>
