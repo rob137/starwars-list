@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { createClient, Provider, useQuery } from 'urql';
+import loadingGif from './loading.gif';
+import errorGif from './error.gif';
 
 type Sorter = 'title' | 'releaseDate' | '';
 
