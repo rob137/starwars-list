@@ -9,7 +9,15 @@ export default {
   title: 'Film List',
 };
 
-const getFoo = ``;
+const getAllFilms = `
+query GetAllFilms
+  {
+    allFilms {
+          title
+        releaseDate
+    }
+  }
+`;
 
 export const Default = () => {
   // this is where you should put urql Provider
