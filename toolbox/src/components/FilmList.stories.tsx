@@ -39,7 +39,7 @@ export const Default = () => {
 const FilmListComponent = () => {
   const [episode, setEpisode] = useState('');
   const [sorter, setSorter] = useState<Sorter>('');
-  const [order, setOrder] = useState('ascending');
+  const [order, setOrder] = useState('');
   const [result] = useQuery({
     query: getAllFilms,
   });
