@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createClient, Provider, useQuery } from 'urql';
 
 const client = createClient({
@@ -13,8 +13,8 @@ const getAllFilms = `
 query GetAllFilms
   {
     allFilms {
-          title
-        releaseDate
+      title
+      releaseDate
     }
   }
 `;
@@ -28,6 +28,7 @@ export const Default = () => {
 };
 
 const FilmListComponent = () => {
+  const [episode, setEpisode] = useState('');
   const [result] = useQuery({
     query: getAllFilms,
   });
@@ -35,13 +36,27 @@ const FilmListComponent = () => {
   if (result.fetching) return <div>'Loading...'</div>;
   if (result.error) return <div>'Oh no!'</div>;
   const { allFilms } = result.data;
+  let filteredFilms = allFilms;
+  if (episode) {
+    filteredFilms = allFilms.filter((film: any) =>
+      film.title.includes(episode),
+    );
+  }
+
   return (
-    <ul>
-      {allFilms.map((film: any, key: number) => (
-        <li key={key}>
-          {film.title} - {new Date(film.releaseDate).getUTCFullYear()}
-        </li>
-      ))}
-    </ul>
+    <div>
+      <input
+        type="text"
+        placeholder="Filter by film name"
+        onChange={(e) => setEpisode(e.target.value)}
+      />
+      <ul>
+        {filteredFilms.map((film: any, key: number) => (
+          <li key={key}>
+            {film.title} - {new Date(film.releaseDate).getUTCFullYear()}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
