@@ -20,10 +20,9 @@ query GetAllFilms
 `;
 
 export const Default = () => {
-  // this is where you should put urql Provider
   return (
     <Provider value={client}>
-      <FilmListComponent />;
+      <FilmListComponent />
     </Provider>
   );
 };
@@ -35,6 +34,14 @@ const FilmListComponent = () => {
 
   if (result.fetching) return <div>'Loading...'</div>;
   if (result.error) return <div>'Oh no!'</div>;
-  // this is where you should put urql useQuery
-  return <div>Edit me to see changes in the storybook!</div>;
+  const { allFilms } = result.data;
+  return (
+    <ul>
+      {allFilms.map((film: any, key: number) => (
+        <li key={key}>
+          {film.title} - {new Date(film.releaseDate).getUTCFullYear()}
+        </li>
+      ))}
+    </ul>
+  );
 };
