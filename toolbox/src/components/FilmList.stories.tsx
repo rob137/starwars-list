@@ -47,7 +47,7 @@ const FilmListComponent = () => {
 
   const { allFilms } = result.data;
   const filteredFilms = episode
-    ? allFilms.filter((film: any) => film.title.includes(episode))
+    ? allFilms.filter((film: any) => film.title.toLowerCase().includes(episode.toLowerCase()))
     : allFilms;
 
   if (sorter && order) {
