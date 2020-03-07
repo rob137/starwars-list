@@ -44,12 +44,26 @@ const FilmListComponent = () => {
     query: getAllFilms,
   });
 
-  if (result.fetching) return <div>'loading...'</div>;
-  if (result.error) return <div>'Oh no!'</div>;
+  if (result.fetching)
+    return (
+      <div>
+        <img src={loadingGif} />
+        'loading..'
+      </div>
+    );
+  if (result.error)
+    return (
+      <div>
+        <img src={errorGif} />
+        'Encountered an error loading the films! Please try again later.'
+      </div>
+    );
 
   const { allFilms } = result.data;
   const filteredFilms = episode
-    ? allFilms.filter((film: any) => film.title.toLowerCase().includes(episode.toLowerCase()))
+    ? allFilms.filter((film: Film) =>
+        film.title.toLowerCase().includes(episode.toLowerCase()),
+      )
     : allFilms;
 
   if (sorter && order) {
@@ -80,7 +94,7 @@ const FilmListComponent = () => {
         <option value="descending">Descending</option>
       </select>
       <ul>
-        {filteredFilms.map((film: any, key: number) => (
+        {filteredFilms.map((film: Film, key: number) => (
           <li key={key}>
             {film.title} - {new Date(film.releaseDate).getUTCFullYear()}
           </li>
